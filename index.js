@@ -11,7 +11,7 @@ const { createChartYaml, createComponents, createJobs, createCronJobs } = requir
 
 commander
   .name('helm-chart-generator')
-  .version('1.0.0', '-v, --version')
+  .version('1.0.0-alpha', '-v, --version')
   .usage('[OPTIONS]...')
   .option('-o, --charts-output-path <path>', 'Set the output path of the generated chart')
   .addHelpText('after', `

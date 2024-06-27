@@ -1,0 +1,27 @@
+# Project
+.vscode
+generated-charts
+examples
+
+# Node.js
+node_modules
+
+# binaries
+bin
+
+# git
+.git
+.gitattributes
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
