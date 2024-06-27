@@ -128,15 +128,36 @@ Finally, the Helm chart will be generated inside the *generated-charts* folder. 
             _helpers.tpl    # A place to put template helpers that you can re-use throughout the chart.
                             # In this file are defined the application name, chart name, component name and labels, jobs name and labels.
 
-            componentN/     # A directory containing the componentN K8s controller (Deployment, StatefulSet or DaemonSet) manifest and its Services manifests.
+            componentN/     # A directory containing the componentN K8s controller (Deployment, StatefulSet or DaemonSet) manifest and its Service manifest.
                             # Additional manifests can be included (e.g. ConfigMaps) inside this folder.
                             # Note: a directory is created for each component.
             
             jobs/           # A directory containing all the Jobs and CronJobs K8s manifests (only is created if the application has Jobs or CronJobs).
 
 ### Component default labels
+This tool creates a set of default labels for each component and job:
+
+Kubernetes [recommended labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/):
+- *app.kubernetes.io/name*: the value of the *application.name* variable defined in the *_helpers.tpl* file. It's the name of the chart or the *nameOverride* value if modified.
+- *app.kubernetes.io/instance*: the release of the chart.
+- *app.kubernetes.io/version*: the chart's *appVersion*.
+- *app.kubernetes.io/component*: the name of the component.
+- *app.kubernetes.io/managed-by*: the tool being used to manage the operation of the application (e.g. Helm).
+
+Custom labels:
+- *tier*: by default, *external* for the main component and *internal* for the others, but it can be modified using the chart values to differentiate between chart components (e.g. api and database).
+- *isMainInterface*: boolean value, the main interface is the first component. It can be used, for instance, as a starting point for creating network policies.
+
+Other labels:
+- *helm.sh/chart*: the value of the *application.chart* variable defined in the *_helpers.tpl* file. It's a string composed of chart's name and version.
 
 ### Values structure
+The generated values file by default is divided into:
+
+1. Global chart values: *nameOverride*, *fullnameOverride* and *chartNodeSelector*.
+2. Component values: a set of specific values (container image and tag, tier, affinity, securityContext, resources, environment variables...) for each component or job.
+
+Some comments have been added to help users to use the values of the Helm chart.
 
 ## ✅ Chart testing
 
@@ -190,6 +211,14 @@ ls generated-charts/<chart-name>
 
 ## ❔ What's next
 ## 💡⚠️ Known limitations
+- Ingress generation is not covered
+- No annotations
+- No dynamic environment variables
+- No CLI args
+- One container per component (sidecar containers not covered)
+- No initContainers
+- No readiness...
+- Expose ports in Daemonsets that use hostnetwork
 
 ## ⚠️📰 License
 

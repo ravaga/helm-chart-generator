@@ -41,7 +41,6 @@ Component {{component}} selector labels.
 {{open}}- define "{{component}}.selectorLabels" -{{close}}
 app.kubernetes.io/name: {{open}} include "application.name" . {{close}}
 app.kubernetes.io/instance: {{open}} .Release.Name {{close}}
-# application: {{open}} .Chart.Name {{close}}
 app.kubernetes.io/component: {{component}}
 isMainInterface: "{{isMainInterface}}"
 tier: {{open}} .Values.{{component}}.tier {{close}}

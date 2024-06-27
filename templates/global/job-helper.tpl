@@ -20,7 +20,6 @@ If release name contains chart name it will be used as a full name.
 {{open}}- define "{{job}}.labels" -{{close}}
 app.kubernetes.io/name: {{open}} include "application.name" . {{close}}
 app.kubernetes.io/instance: {{open}} .Release.Name {{close}}
-application: {{open}} .Chart.Name {{close}}
 app.kubernetes.io/component: {{job}}
 isMainInterface: "no"
 tier: internal
