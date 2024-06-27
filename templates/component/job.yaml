@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{open}} include "{{job}}.fullname" . {{close}}
+  namespace: {{open}} .Release.Namespace | quote {{close}}
+  labels:
+    {{open}}- include "{{job}}.labels" . | nindent 4 {{close}}
+spec:
+  template:
+    spec:
+      {{open}}- with .Values.{{job}}.imagePullSecrets {{close}}
+      imagePullSecrets:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.chartNodeSelector {{close}}
+      nodeSelector:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- if not .Values.chartNodeSelector {{close}}
+        {{open}}- with .Values.{{job}}.nodeSelector {{close}}
+      nodeSelector:
+          {{open}}- toYaml . | nindent 8 {{close}}
+        {{open}}- end {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.{{job}}.affinity {{close}}
+      affinity:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.{{job}}.tolerations {{close}}
+      tolerations:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      securityContext:
+        {{open}}- toYaml .Values.{{job}}.podSecurityContext | nindent 8 {{close}}
+      containers:
+      - name: {{job}}
+        securityContext:
+          {{open}}- toYaml .Values.{{job}}.securityContext | nindent 12 {{close}}
+        image: "{{open}} .Values.{{job}}.image.repository {{close}}:{{open}} .Values.{{job}}.image.tag | default .Chart.AppVersion {{close}}"
+        imagePullPolicy: {{open}} .Values.{{job}}.image.pullPolicy {{close}}
+        command: ["example",  "-e", "command"]
+        {{#if hasEnvVars}}
+        {{open}}- with .Values.{{job}}.envVars {{close}}
+        env:
+          - name: EXAMPLE_ENV_VAR
+            value: {{open}} .exampleEnvVar | quote {{close}}
+        {{open}}- end {{close}}
+        {{/if}}
+      restartPolicy: {{open}} .Values.{{job}}.restartPolicy {{close}}
+  backoffLimit: {{open}} .Values.{{job}}.backoffLimit {{close}}

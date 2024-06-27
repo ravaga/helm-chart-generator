@@ -1,0 +1,70 @@
+# Component {{component}} values.
+{{component}}:
+  tier: {{tier}}
+  replicaCount: 1
+
+  # Configuration of the container image.
+  imagePullSecrets: []
+  image:
+    repository: {{imageRepo}}
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "{{{imageTag}}}"
+    pullPolicy: IfNotPresent
+  {{#if hasService}}
+  # Configuration of the service: type and ports.
+  service:
+    type: {{serviceType}}
+    ports:
+    {{#each svcValues}}
+      {{{this}}}
+    {{/each}}
+  {{/if}}
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    # minReplicas: 1
+    # maxReplicas: 3
+    # targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    
+  {{#if hasEnvVars}}
+  # Include here the environment variables to be used in containers section of the component's manifest.
+  # TODO: Here and in the manifest is included an example, please adapt them to the requirements of your component.
+  envVars:
+    exampleEnvVar: exampleValue
+  {{/if}}
+  {{#if statefulset}}
+  # Component data persistence
+  persistence:
+    enabled: true
+    existingClaim: ""
+    # mountPath: /path/in/container
+    accessModes:
+      - ReadWriteOnce
+    size: 50Mi
+  {{/if}}
+
+  # Configure this parameters to deploy the component in specific K8s node(s).
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+

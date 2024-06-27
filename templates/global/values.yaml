@@ -1,0 +1,11 @@
+# Default values for the application.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# String to partially override application.fullname template (will maintain the release name).
+nameOverride: ""
+# String to fully override application.fullname template.
+fullnameOverride: ""
+# Deploy all the components in specific K8s node(s).
+chartNodeSelector: {}
+

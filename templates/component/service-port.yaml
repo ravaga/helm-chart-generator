@@ -1,0 +1,7 @@
+- name: {{name}}
+      port: {{open}} .Values.{{component}}.service.ports.{{name}}.port {{close}}
+      targetPort: {{open}} .Values.{{component}}.service.ports.{{name}}.targetPort {{close}}
+      protocol: {{open}} .Values.{{component}}.service.ports.{{name}}.protocol {{close}}{{#if regularSvc}}
+      {{open}}- if and (or (eq .Values.{{component}}.service.type "NodePort") (eq .Values.{{component}}.service.type "LoadBalancer")) (not (empty .Values.{{component}}.service.ports.{{name}}.nodePort)) {{close}}
+      nodePort: {{open}} .Values.{{component}}.service.ports.{{name}}.nodePort {{close}}
+      {{open}}- end {{close}}{{/if}}

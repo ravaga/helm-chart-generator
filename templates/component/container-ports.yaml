@@ -1,0 +1,3 @@
+- name: {{name}}
+              containerPort: {{open}} .Values.{{component}}.service.ports.{{name}}.containerPort {{close}}
+              protocol: {{open}} .Values.{{component}}.service.ports.{{name}}.protocol {{close}}

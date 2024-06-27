@@ -1,0 +1,37 @@
+{
+  "name": "@ravaga/helm-chart-generator",
+  "version": "1.0.0-alpha",
+  "description": "Helm chart generator",
+  "main": "index.js",
+  "scripts": {
+    "generate-chart": "node index"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "Helm",
+    "chart",
+    "Helm chart",
+    "K8s",
+    "generator"
+  ],
+  "author": "Rafael Vaño <ravagaatz@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": "github:ravaga/helm-chart-generator",
+  "dependencies": {
+    "commander": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.2.1"
+  },
+  "pkg": {
+    "scripts": "./*.js",
+    "assets": "templates/**/*",
+    "targets": [
+      "node18-linux-x64",
+      "node18-macos-x64",
+      "node18-win-x64"
+    ],
+    "outputPath": "bin"
+  }
+}

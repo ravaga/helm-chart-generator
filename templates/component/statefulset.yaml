@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{open}} include "{{component}}.fullname" . {{close}}
+  namespace: {{open}} .Release.Namespace | quote {{close}}
+  labels:
+    {{open}}- include "{{component}}.labels" . | nindent 4 {{close}}
+spec:
+  serviceName: {{open}} include "{{component}}.fullname" . {{close}}-headless
+  {{open}}- if not .Values.{{component}}.autoscaling.enabled {{close}}
+  replicas: {{open}} .Values.{{component}}.replicaCount {{close}}
+  {{open}}- end {{close}}
+  selector:
+    matchLabels:
+      {{open}}- include "{{component}}.selectorLabels" . | nindent 6 {{close}}
+  template:
+    metadata:
+      labels:
+        {{open}}- include "{{component}}.labels" . | nindent 8 {{close}}
+    spec:
+      {{open}}- with .Values.{{component}}.imagePullSecrets {{close}}
+      imagePullSecrets:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.chartNodeSelector {{close}}
+      nodeSelector:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- if not .Values.chartNodeSelector {{close}}
+        {{open}}- with .Values.{{component}}.nodeSelector {{close}}
+      nodeSelector:
+          {{open}}- toYaml . | nindent 8 {{close}}
+        {{open}}- end {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.{{component}}.affinity {{close}}
+      affinity:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      {{open}}- with .Values.{{component}}.tolerations {{close}}
+      tolerations:
+        {{open}}- toYaml . | nindent 8 {{close}}
+      {{open}}- end {{close}}
+      securityContext:
+        {{open}}- toYaml .Values.{{component}}.podSecurityContext | nindent 8 {{close}}
+      containers:
+        - name: {{component}}
+          securityContext:
+            {{open}}- toYaml .Values.{{component}}.securityContext | nindent 12 {{close}}
+          image: "{{open}} .Values.{{component}}.image.repository {{close}}:{{open}} .Values.{{component}}.image.tag | default .Chart.AppVersion {{close}}"
+          imagePullPolicy: {{open}} .Values.{{component}}.image.pullPolicy {{close}}
+          ports:
+          {{#each containerPorts}}
+            {{this}}
+          {{/each}}
+          resources:
+            {{open}}- toYaml .Values.{{component}}.resources | nindent 12 {{close}}
+          {{#if hasEnvVars}}
+          {{open}}- with .Values.{{component}}.envVars {{close}}
+          env:
+            - name: EXAMPLE_ENV_VAR
+              value: {{open}} .exampleEnvVar | quote {{close}}
+          {{open}}- end {{close}}
+          {{/if}}
+          volumeMounts:
+            {{open}}- if .Values.{{component}}.persistence.enabled {{close}}
+            - name: data
+              mountPath: /path/in/container
+            {{open}}- end {{close}}
+      volumes:
+  {{open}}- if and .Values.{{component}}.persistence.enabled .Values.{{component}}.persistence.existingClaim {{close}}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{open}} tpl .Values.{{component}}.persistence.existingClaim $ {{close}}
+  {{open}}- else if not .Values.{{component}}.persistence.enabled {{close}}
+        - name: data
+          emptyDir: {}
+  {{open}}- else {{close}}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+        {{open}}- range .Values.{{component}}.persistence.accessModes {{close}}
+          - {{open}} . | quote {{close}}
+        {{open}}- end {{close}}
+        resources:
+          requests:
+            storage: {{open}} .Values.{{component}}.persistence.size | quote {{close}}
+  {{open}}- end {{close}}

@@ -1,0 +1,24 @@
+This Helm chart has been created using the ravaga Helm chart generator (https://github.com/ravaga/helm-chart-generator)!
+
+Thank you for installing {{open}} .Chart.Name {{close}}.
+
+Your release is named {{open}} .Release.Name {{close}}.
+
+{{#if hasService}}
+1. Get the application URL by running these commands:
+{{open}}- if contains "NodePort" .Values.{{mainComp}}.service.type {{close}}
+  export NODE_PORT=$(kubectl get --namespace {{open}} .Release.Namespace {{close}} -o jsonpath="{.spec.ports[0].nodePort}" services {{open}} include "{{mainComp}}.fullname" . {{close}})
+  export NODE_IP=$(kubectl get nodes --namespace {{open}} .Release.Namespace {{close}} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{open}}- else if contains "LoadBalancer" .Values.{{mainComp}}.service.type {{close}}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{open}} .Release.Namespace {{close}} svc -w {{open}} include "{{mainComp}}.fullname" . {{close}}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{open}} .Release.Namespace {{close}} {{open}} include "{{mainComp}}.fullname" . {{close}} --template "{{open}}"{{open}} range (index .status.loadBalancer.ingress 0) {{close}}{{open}}.}}{{open}} end {{close}}"}}")
+  echo http://$SERVICE_IP:{{open}} .Values.{{mainComp}}.service.ports.{{mainPortName}}.port {{close}}
+{{open}}- else if contains "ClusterIP" .Values.{{mainComp}}.service.type {{close}}
+  export POD_NAME=$(kubectl get pods --namespace {{open}} .Release.Namespace {{close}} -l "app.kubernetes.io/component={{mainComp}},app.kubernetes.io/instance={{open}} .Release.Name {{close}}" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace {{open}} .Release.Namespace {{close}} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace {{open}} .Release.Namespace {{close}} port-forward $POD_NAME 8080:$CONTAINER_PORT
+{{open}}- end {{close}}
+{{/if}}

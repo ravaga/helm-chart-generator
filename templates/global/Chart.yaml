@@ -1,0 +1,20 @@
+# This chart has been generated using the ravaga Helm chart generator (https://github.com/ravaga/helm-chart-generator)
+apiVersion: v2
+name: {{ name }}
+description: {{{ description }}}
+type: application
+version: {{ chartVersion }}
+appVersion: "{{ appVersion }}"
+keywords:
+  - ravaga-helm-chart-generator
+  {{#each keywords}}
+  - {{{this}}}
+  {{/each}}
+
+{{#if hasDependencies}}
+# Chart dependencies or subcharts.
+dependencies:
+  {{#each dependencies}}
+  {{{this}}}
+  {{/each}}
+{{/if}}

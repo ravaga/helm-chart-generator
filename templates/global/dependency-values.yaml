@@ -1,0 +1,4 @@
+# Override here the dependency "{{name}}" values
+{{name}}:
+  exampleValue: value
+

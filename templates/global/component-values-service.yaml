@@ -1,0 +1,6 @@
+{{ name }}:
+        port: {{ port }}
+        targetPort: {{ port }}
+        containerPort: {{ port }}
+        nodePort: ""
+        protocol: {{ protocol }}

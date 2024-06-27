@@ -1,7 +1,7 @@
 # ☸️⚡ Helm chart generator
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Docker Image Version](https://img.shields.io/docker/v/ravaga/helm-chart-generator)](https://hub.docker.com/r/ravaga/helm-chart-generator)
-<!-- TODO publish in NPM and add NPM badge -->
+[![NPM Version](https://img.shields.io/npm/v/@ravaga/helm-chart-generator)](https://www.npmjs.com/package/@ravaga/helm-chart-generator)
 
 <!-- markdownlint-disable-next-line -->
 [![Helm chart generator technologies](https://skillicons.dev/icons?i=nodejs,docker,kubernetes)](https://github.com/ravaga/helm-chart-generator)
@@ -30,6 +30,11 @@ Using the public Docker image from [Dockerhub](https://hub.docker.com/r/ravaga/h
 
 ```bash
 docker run -it --rm --name helm-chart-generator -v <path_in_host_machine>:/chart-generator/generated-charts ravaga/helm-chart-generator
+```
+
+For instance:
+```bash
+docker run -it --rm --name helm-chart-generator -v ./generated-charts:/chart-generator/generated-charts ravaga/helm-chart-generator
 ```
 
 Otherwise, you can build and use your own Docker image:
@@ -164,14 +169,24 @@ helm install test generated-charts/chart-name --debug --dry-run
 
 ## 🙋 Examples folder
 
-A folder of examples will be added to help users to improve the knowledge on the use of this tool. Each example will be divided into two folders:
+A folder of examples will be added to help users to improve their knowledge on the use of this tool. Each example will be divided into two folders:
 
 - **generated**: the generated chart using this tool, without any modifications.
 - **production**: the final chart ready for production, which has been created by modifying the generated chart.
 
 
 ## 🖥️ Developer guide
-This software is open-source, so it's open to any modifications. The only thing you have to do is to install the project depencencies by running the *npm i* command. Then, you can generate a chart by running *npm run generate-chart*. The Helm chart will be generated inside the *generated-charts* folder, in the same path as the code.
+**This software is open-source, so it's open to any modifications and contributions**. The only thing you have to do is to install the project depencencies by running the *npm i* command. Then, you can generate a chart by running *npm run generate-chart*. The Helm chart will be generated inside the *generated-charts* folder, in the same path as the code.
+
+```bash
+npm i
+```
+```bash
+npm run generate-chart
+```
+```bash
+ls generated-charts/<chart-name>
+```
 
 ## ❔ What's next
 ## 💡⚠️ Known limitations

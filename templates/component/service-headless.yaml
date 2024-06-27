@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{open}} include "{{component}}.svc.headless" . {{close}}
+  namespace: {{open}} .Release.Namespace | quote {{close}}
+  labels:
+    {{open}}- include "{{component}}.labels" . | nindent 4 {{close}}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+  {{#each svcPort}}
+    {{{this}}}
+  {{/each}}
+  selector:
+    {{open}}- include "{{component}}.selectorLabels" . | nindent 4 {{close}}
