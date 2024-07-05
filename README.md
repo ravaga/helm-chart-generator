@@ -20,7 +20,7 @@ Finally, the idea is to improve this generator with the help of the community to
 
 ## 📦 Run the Helm chart generator
 
-Currently, it can be run in 2 different ways:
+Currently, it can be run in 3 different ways:
 
 ### 🐳 As a Docker container
 
@@ -43,7 +43,7 @@ Otherwise, you can build and use your own Docker image:
 docker build -t <your-tag> .
 ```
 
-### 🖥️💾 As an executable binary
+### 💾 As an executable binary
 
 In the releases page, there ara available executable binaries for many platforms (Windows x64, Mac OS x64, Linux x64 and Linux ARM64).
 
@@ -60,6 +60,10 @@ Options:
   Example call:
     $ helm-chart-generator -o ./generated-charts
 ```
+
+### 🖥️ As a local Node.js application (from source)
+Please, follow the steps described in the [developer guide](#🖥️-developer-guide).
+
 
 
 ## 📖 Usage
@@ -210,15 +214,17 @@ ls generated-charts/<chart-name>
 ```
 
 ## ❔ What's next
-## 💡⚠️ Known limitations
-- Ingress generation is not covered
-- No annotations
-- No dynamic environment variables
-- No CLI args
-- One container per component (sidecar containers not covered)
-- No initContainers
-- No readiness...
-- Expose ports in Daemonsets that use hostnetwork
+The initial idea is to create a stable version (1.0.0) with the pending requirements, and then start developing requested functionalities from the community proposals.
+
+## 💡⚠️ Known issues and limitations
+- Ingress generation is not covered.
+- No CLI args (*args* key inside components container).
+- No annotations in the whole generated chart.
+- The creation of environment variables in components is not dynamic yet so it have to be filled manually both in *values.yaml* and in components templates. The idea is to ask for them to create them automatically.
+- Components are limited to one container per component, so sidecar or additional containers are not covered yet.
+- No initContainers.
+- No Liveness, Readiness and Startup probes.
+- The *ports* key (inside *containers* section) of the created Daemonset templates that use hostnetwork is an empty object, so please, fill it manually.
 
 ## ⚠️📰 License
 
