@@ -1,4 +1,4 @@
-# This chart has been generated using the ravaga Helm chart generator (https://github.com/ravaga/helm-chart-generator)
+# This Helm chart has been generated using the ravaga Helm chart generator (https://github.com/ravaga/helm-chart-generator)
 apiVersion: v2
 name: {{ name }}
 description: {{{ description }}}
