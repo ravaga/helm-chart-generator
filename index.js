@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const { existsSync } = require("fs")
 const { copyFile, mkdir, rm } = require("fs/promises")
 
@@ -13,7 +12,7 @@ commander
   .name('helm-chart-generator')
   .version('1.0.0-alpha', '-v, --version')
   .usage('[OPTIONS]...')
-  .option('-o, --charts-output-path <path>', 'Set the output path of the generated chart')
+  .option('-o, --charts-output-path <path>', 'set the output path of the generated chart')
   .addHelpText('after', `
 
   Example call:
@@ -44,7 +43,7 @@ const runGenerator = async () => {
       console.log("---------------------")
       console.error("The Helm chart \"" + answers.name + "\" has already been created, so it will be stored inside a new folder using the current Unix timestamp. This new folder will be named \"" + CHART_OUTPUT_DIR +"\"")
     }
-    // if (!existsSync(CHART_OUTPUT_DIR)) {
+
     // create chart root folder
     await mkdir(CHART_OUTPUT_DIR)
 
@@ -85,9 +84,6 @@ const runGenerator = async () => {
     console.log("The generated chart is stored in: " + CHART_OUTPUT_DIR)
     console.log("=====================")
 
-    // } else {
-    //   console.error("The Helm chart \"" + answers.name + "\" has already been created, please, use another name")
-    // }
   } catch (error) {
     console.error(error.stack);
 
