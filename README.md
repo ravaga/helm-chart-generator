@@ -18,6 +18,8 @@ Therefore, this generator provides a basic but functional chart, which aims to s
 Finally, the idea is to improve this generator with the help of the community to achieve the creation of a fully functional Helm chart with the minimal human interaction, for instance manual editing of templates and values, after the creation of the chart.
 
 
+![Helm chart generator workflow](doc/helm-chart-generator-english.png)
+
 ## 📦 Run the Helm chart generator
 
 Currently, it can be run in 3 different ways:
